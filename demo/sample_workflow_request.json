@@ -1,0 +1,5 @@
+{
+  "requirement": "The AI workflow assistant shall review inbound project requests, identify missing acceptance criteria, classify priority, route high-risk items to human review, generate a QA checklist, and save an audit trail with request reference, confidence score, final status, and reviewer handoff notes.",
+  "domain": "workflow_automation",
+  "risk_level": "high"
+}
