@@ -31,31 +31,53 @@ TraceMind AI takes one requirement and generates a polished review package that 
 - Exports: TXT and CSV
 - Tooling: ESLint, npm, virtual environments
 
+## System Architecture
+
+TraceMind AI is organized as a lightweight workflow platform: the frontend collects a requirement, the FastAPI backend processes it, the AI and QA layers turn it into structured artifacts, and the output layer returns review-ready results that can be saved, audited, and exported.
+
+Full architecture notes: [`docs/architecture.md`](./docs/architecture.md)
+
+```mermaid
+flowchart LR
+    A[User / Recruiter / Hiring Manager] --> B[Frontend Dashboard]
+    B --> C[FastAPI Backend]
+    C --> D[Workflow Request Handler]
+    D --> E[AI Processing Layer]
+    E -. Optional live model integration .-> F[OpenAI API]
+    E --> G[QA Validation Layer]
+    G --> H[Document / Output Generator]
+    H --> L[Reviewer / Admin Dashboard]
+    L --> I[Exported Results / Reports]
+    C --> J[(SQLite Database)]
+    C --> K[(Audit Logs / Activity History)]
+```
+
 ## Project Structure
 
 ```text
 TraceMind AI/
-├─ backend/
-│  ├─ app/
-│  │  ├─ main.py
-│  │  ├─ schemas.py
-│  │  └─ services/
-│  ├─ data/
-│  └─ requirements.txt
-├─ demo/
-│  └─ sample_workflow_request.json
-├─ docs/
-│  └─ screenshots/
-├─ frontend/
-│  ├─ public/
-│  ├─ src/
-│  ├─ .env.example
-│  └─ package.json
-├─ .env.example
-├─ .gitignore
-├─ DEMO_CHECKLIST.md
-├─ DEMO_SCRIPT.md
-└─ README.md
+- backend/
+  - app/
+    - main.py
+    - schemas.py
+    - services/
+  - data/
+  - requirements.txt
+- demo/
+  - sample_workflow_request.json
+- docs/
+  - architecture.md
+  - screenshots/
+- frontend/
+  - public/
+  - src/
+  - .env.example
+  - package.json
+- .env.example
+- .gitignore
+- DEMO_CHECKLIST.md
+- DEMO_SCRIPT.md
+- README.md
 ```
 
 ## Screenshots
