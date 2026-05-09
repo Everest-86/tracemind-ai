@@ -129,7 +129,8 @@ TraceMind AI now includes a structured feedback package so the project can be im
 ### Backend
 
 ```powershell
-cd "C:\Users\lacie\Desktop\codex-project\linkedin-posts\TraceMind AI\backend"
+cd /codex-pro
+cd backend
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
@@ -147,7 +148,8 @@ Health check:
 ### Frontend
 
 ```powershell
-cd "C:\Users\lacie\Desktop\codex-project\linkedin-posts\TraceMind AI\frontend"
+cd /codex-pro
+cd frontend
 npm install
 npm run dev -- --host 127.0.0.1 --port 5173
 ```
