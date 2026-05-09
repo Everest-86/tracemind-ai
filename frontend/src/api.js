@@ -28,7 +28,25 @@ async function readResponse(response) {
 }
 
 export async function fetchRecentAnalyses() {
-  throw new Error('Saved analysis browsing is not enabled in the current TraceMind AI demo build.')
+  const response = await fetch(`${API_BASE_URL}/api/analyses`)
+  return readResponse(response)
+}
+
+export async function createAnalysis(payload) {
+  const response = await fetch(`${API_BASE_URL}/api/analyses`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+
+  return readResponse(response)
+}
+
+export async function fetchAnalysis(analysisId) {
+  const response = await fetch(`${API_BASE_URL}/api/analyses/${analysisId}`)
+  return readResponse(response)
 }
 
 export async function generateQAPackage(payload) {

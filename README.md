@@ -1,5 +1,7 @@
 # TraceMind AI
 
+[![CI](https://github.com/Everest-86/tracemind-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Everest-86/tracemind-ai/actions/workflows/ci.yml)
+
 TraceMind AI is a professional AI portfolio project that turns workflow requirements into structured QA and documentation outputs. It is built to demonstrate practical AI-assisted workflow automation, clean project organization, clear documentation, and recruiter-friendly software presentation without using real private data, credentials, or sensitive records.
 
 ## Short Summary
@@ -18,6 +20,7 @@ TraceMind AI takes one requirement and generates a polished review package that 
 
 - Requirement-to-review generation flow powered by FastAPI and a React frontend
 - Structured output set including test cases, edge cases, negative scenarios, risk notes, and traceability
+- Saved run history backed by SQLite so analyses can be revisited and reloaded
 - Client-side TXT and CSV exports for demo-ready presentation
 - Local sample fallback when the backend is offline
 - Public-safe sample data suitable for GitHub, LinkedIn, and recruiter walkthroughs
@@ -30,6 +33,13 @@ TraceMind AI takes one requirement and generates a polished review package that 
 - Storage: SQLite for optional saved analysis support
 - Exports: TXT and CSV
 - Tooling: ESLint, npm, virtual environments
+
+## Design Decisions
+
+- Local-first by default: the project runs safely with mock generation logic so it is easy to review and demo without external service dependencies.
+- Clear separation of concerns: the frontend handles interaction and presentation, while the backend handles orchestration, generation, persistence, and exports.
+- QA as a product feature: the output is intentionally structured around test cases, guardrails, traceability, and review artifacts instead of generic text generation.
+- Extensible architecture: the current processing layer is mock-based, but the structure is intentionally ready for optional live model integration later.
 
 ## System Architecture
 
@@ -62,19 +72,25 @@ TraceMind AI/
     - schemas.py
     - services/
   - data/
+  - tests/
   - requirements.txt
 - demo/
   - sample_workflow_request.json
 - docs/
   - architecture.md
+  - upgrade-plan.md
   - screenshots/
 - frontend/
   - public/
   - src/
+  - tests/
   - .env.example
   - package.json
 - .env.example
 - .gitignore
+- .github/
+  - workflows/
+    - ci.yml
 - DEMO_CHECKLIST.md
 - DEMO_SCRIPT.md
 - README.md
@@ -98,6 +114,15 @@ Suggested filenames:
 4. Load the sample requirement or paste your own workflow requirement.
 5. Generate the package and walk through the output cards.
 6. Export the TXT and CSV files to show presentation and documentation quality.
+
+## Feedback and Review
+
+TraceMind AI now includes a structured feedback package so the project can be improved through real reviewer input instead of guesswork alone.
+
+- General survey: [`FEEDBACK_SURVEY.md`](./FEEDBACK_SURVEY.md)
+- Google Form copy version: [`docs/google-form-feedback.md`](./docs/google-form-feedback.md)
+- Recruiter-specific survey: [`docs/recruiter-feedback.md`](./docs/recruiter-feedback.md)
+- Engineering manager survey: [`docs/engineering-manager-feedback.md`](./docs/engineering-manager-feedback.md)
 
 ## How To Run Locally
 
@@ -158,26 +183,27 @@ TraceMind AI is built to showcase QA thinking as part of the product itself.
 
 - The app generates test cases, edge cases, failure modes, and traceability from a single requirement
 - The frontend supports a fallback-safe demo path so the presentation does not break if the backend is unavailable
+- Saved analyses can be reloaded from SQLite-backed history so the workflow feels repeatable and reviewable
 - TXT and CSV exports make it easy to verify consistency between visible UI content and shared artifacts
 - The included sample workflow is mock-only and public-safe by design
-- The project is prepared for manual smoke testing of backend startup, frontend startup, generation flow, and export behavior
+- The repository now includes automated backend smoke tests, frontend data-shape tests, and GitHub Actions CI for lint, build, and test checks
 
 ## Future Improvements
 
-- Add automated backend smoke tests and frontend interaction tests
 - Add screenshot assets and a short hosted demo video
-- Support saved runs and comparison views directly in the UI
-- Add optional LLM-backed generation behind environment-based configuration
-- Add GitHub Actions for linting, smoke checks, and build verification
+- Add deployment targets for a public preview environment
+- Add browser-based interaction tests for the primary demo workflow
+- Split the generation layer into interchangeable mock and live AI providers
+- Add comparison views, scoring summaries, and richer result analytics
+
+Detailed roadmap: [`docs/upgrade-plan.md`](./docs/upgrade-plan.md)
 
 ## Author Information
 
-Update this section before publishing:
-
-- Name: `Your Name`
-- GitHub: `https://github.com/your-username`
-- LinkedIn: `https://www.linkedin.com/in/your-profile`
-- Portfolio: `https://your-portfolio-site.example`
+- Name: `Everest Laci`
+- GitHub: `https://github.com/Everest-86`
+- LinkedIn: `Add your public LinkedIn profile URL`
+- Portfolio: `Add your portfolio or personal website URL`
 
 ## Public Repo Safety
 

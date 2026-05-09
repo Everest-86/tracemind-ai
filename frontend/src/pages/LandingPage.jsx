@@ -1,9 +1,11 @@
-import { startTransition, useState } from 'react'
+import { startTransition, useEffect, useState } from 'react'
 
+import RecentRuns from '../components/RecentRuns.jsx'
 import RequirementForm from '../components/RequirementForm.jsx'
 import ResultsDashboard from '../components/ResultsDashboard.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
-import { generateQAPackage } from '../api.js'
+import { createAnalysis, fetchAnalysis, fetchRecentAnalyses, generateQAPackage } from '../api.js'
+import { analysisToDashboardData } from '../historyAdapter.js'
 import { createSampleQAPackage, sampleGeneratorRequest } from '../mockData.js'
 
 const outputs = [
@@ -29,6 +31,11 @@ const outputs = [
   },
 ]
 
+const DOMAIN_CONTEXTS = {
+  workflow_automation: 'workflow automation',
+  qa_operations: 'QA and release operations',
+}
+
 function LandingPage() {
   const [form, setForm] = useState({
     ...sampleGeneratorRequest,
@@ -39,6 +46,36 @@ function LandingPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [noticeMessage, setNoticeMessage] = useState('')
+  const [recentAnalyses, setRecentAnalyses] = useState([])
+  const [isHistoryLoading, setIsHistoryLoading] = useState(true)
+  const [selectedAnalysisId, setSelectedAnalysisId] = useState(null)
+
+  useEffect(() => {
+    let isActive = true
+
+    async function loadRecentAnalyses() {
+      try {
+        const items = await fetchRecentAnalyses()
+        if (isActive) {
+          setRecentAnalyses(items)
+        }
+      } catch {
+        if (isActive) {
+          setRecentAnalyses([])
+        }
+      } finally {
+        if (isActive) {
+          setIsHistoryLoading(false)
+        }
+      }
+    }
+
+    loadRecentAnalyses()
+
+    return () => {
+      isActive = false
+    }
+  }, [])
 
   function updateField(field) {
     return (event) => {
@@ -71,6 +108,46 @@ function LandingPage() {
     revealResults()
   }
 
+  function analysisPayloadFromForm(currentForm) {
+    return {
+      product_name: 'TraceMind AI',
+      domain_context: DOMAIN_CONTEXTS[currentForm.domain] || 'workflow automation',
+      requirement_text: currentForm.requirement.trim(),
+    }
+  }
+
+  async function refreshRecentAnalyses() {
+    try {
+      const items = await fetchRecentAnalyses()
+      setRecentAnalyses(items)
+    } catch {
+      setRecentAnalyses((current) => current)
+    }
+  }
+
+  async function handleLoadSavedAnalysis(analysisId) {
+    setIsLoading(true)
+    setErrorMessage('')
+
+    try {
+      const analysis = await fetchAnalysis(analysisId)
+      setSelectedAnalysisId(analysis.id)
+      setForm((current) => ({
+        ...current,
+        requirement: analysis.requirement_text,
+      }))
+      applyResult(
+        analysisToDashboardData(analysis),
+        'saved',
+        `Loaded saved analysis ${analysis.outputs.requirement_reference} from activity history.`,
+      )
+    } catch (error) {
+      setErrorMessage(error.message || 'Unable to load the selected saved analysis.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   async function handleSubmit(event) {
     event.preventDefault()
 
@@ -82,10 +159,30 @@ function LandingPage() {
     setIsLoading(true)
     setErrorMessage('')
     setNoticeMessage('')
+    setSelectedAnalysisId(null)
 
     try {
       const payload = await generateQAPackage(form)
-      applyResult(payload, 'live', 'Live backend response received.')
+      let saveResult = null
+
+      try {
+        saveResult = await createAnalysis(analysisPayloadFromForm(form))
+      } catch {
+        saveResult = null
+      }
+
+      if (saveResult?.id) {
+        setSelectedAnalysisId(saveResult.id)
+        await refreshRecentAnalyses()
+      }
+
+      applyResult(
+        payload,
+        'live',
+        saveResult?.id
+          ? `Live backend response received and saved to activity history as ${saveResult.outputs.requirement_reference}.`
+          : 'Live backend response received.',
+      )
     } catch (error) {
       if (error.status === 422) {
         setErrorMessage(error.message)
@@ -231,6 +328,37 @@ function LandingPage() {
               <div className="insight-item">
                 <strong>Made for portfolio review</strong>
                 <span>Documentation quality, QA framing, and public-safe sample data stay visible beside the workflow detail.</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section className="page-section">
+        <div className="studio-layout">
+          <RecentRuns
+            isLoading={isHistoryLoading}
+            items={recentAnalyses}
+            onSelect={handleLoadSavedAnalysis}
+            selectedId={selectedAnalysisId}
+          />
+
+          <aside className="insight-panel">
+            <div className="badge">Upgrade impact</div>
+            <h3>Recent run history now reinforces the product story.</h3>
+            <p>
+              This addition shows persistence, traceability, and repeatable review flow. It helps the project feel more
+              like a real internal tool rather than a one-time generator demo.
+            </p>
+
+            <div className="insight-stack">
+              <div className="insight-item">
+                <strong>Persistent review trail</strong>
+                <span>Live runs can be saved, listed, and reloaded directly from the backend history endpoints.</span>
+              </div>
+              <div className="insight-item">
+                <strong>Better demo credibility</strong>
+                <span>Recruiters and managers can see that the app supports more than a single throwaway interaction.</span>
               </div>
             </div>
           </aside>

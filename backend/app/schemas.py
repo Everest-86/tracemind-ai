@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field
 class GenerateRequest(BaseModel):
     product_name: str | None = Field(default=None, max_length=120)
     domain_context: str | None = Field(default=None, max_length=120)
-    requirement_text: str = Field(min_length=25, max_length=6000)
+    requirement_text: str = Field(min_length=20, max_length=6000)
 
 
 class ManualTestCase(BaseModel):

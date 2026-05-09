@@ -54,6 +54,8 @@ function ResultsDashboard({ data, isLoading, resultSource }) {
           <span className={`source-badge ${resultSource === 'sample' ? 'source-sample' : 'source-live'}`}>
             {resultSource === 'sample'
               ? 'Showing local sample output'
+              : resultSource === 'saved'
+                ? 'Showing saved backend analysis'
               : resultSource === 'live'
                 ? 'Connected to backend output'
                 : 'Ready to generate'}

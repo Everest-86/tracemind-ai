@@ -27,7 +27,11 @@ function RequirementForm({
           <h3>Generate a workflow review package from one requirement.</h3>
         </div>
         <span className={`source-badge ${resultSource === 'sample' ? 'source-sample' : 'source-live'}`}>
-          {resultSource === 'sample' ? 'Sample fallback ready' : 'FastAPI-ready demo'}
+          {resultSource === 'sample'
+            ? 'Sample fallback ready'
+            : resultSource === 'saved'
+              ? 'Saved analysis loaded'
+              : 'FastAPI-ready demo'}
         </span>
       </div>
 

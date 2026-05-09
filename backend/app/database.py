@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import sqlite3
+from contextlib import contextmanager
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -32,10 +33,19 @@ def get_connection() -> sqlite3.Connection:
     return connection
 
 
+@contextmanager
+def managed_connection():
+    connection = get_connection()
+    try:
+        yield connection
+    finally:
+        connection.close()
+
+
 def init_db() -> None:
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    with get_connection() as connection:
+    with managed_connection() as connection:
         connection.execute(
             """
             CREATE TABLE IF NOT EXISTS analyses (
@@ -68,7 +78,7 @@ def _row_to_analysis(row: sqlite3.Row) -> RequirementAnalysis:
 def save_analysis(request: GenerateRequest, outputs: RequirementOutputBundle) -> RequirementAnalysis:
     created_at = datetime.now(UTC).isoformat(timespec="seconds").replace("+00:00", "Z")
 
-    with get_connection() as connection:
+    with managed_connection() as connection:
         cursor = connection.execute(
             """
             INSERT INTO analyses (
@@ -95,7 +105,7 @@ def save_analysis(request: GenerateRequest, outputs: RequirementOutputBundle) ->
 
 
 def get_analysis(analysis_id: int) -> RequirementAnalysis | None:
-    with get_connection() as connection:
+    with managed_connection() as connection:
         row = connection.execute(
             """
             SELECT id, product_name, domain_context, requirement_text, payload_json, created_at
@@ -112,7 +122,7 @@ def get_analysis(analysis_id: int) -> RequirementAnalysis | None:
 
 
 def list_analyses(limit: int = 8) -> list[AnalysisListItem]:
-    with get_connection() as connection:
+    with managed_connection() as connection:
         rows = connection.execute(
             """
             SELECT id, product_name, requirement_text, payload_json, created_at
