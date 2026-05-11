@@ -8,7 +8,11 @@ function formatDate(value) {
 
 function RecentRuns({ items, isLoading, onSelect, selectedId }) {
   return (
-    <section className="history-panel">
+    <section
+      className="history-panel demo-target demo-target--left"
+      data-demo-label="History cue"
+      data-demo-tip="This section proves the app supports persistence by saving runs and letting you reload earlier analyses."
+    >
       <div className="panel-header">
         <div>
           <div className="eyebrow section-eyebrow">Saved Run History</div>

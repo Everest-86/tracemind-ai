@@ -1,8 +1,14 @@
 import { exportQASummaryTxt, exportTestCasesCsv, exportTraceabilityCsv } from '../exportUtils.js'
 
-function ResultCard({ title, eyebrow, children, className = '' }) {
+function ResultCard({ title, eyebrow, children, className = '', demoTip = '', demoLabel = 'Results cue', demoPosition = 'right' }) {
+  const demoClasses = demoTip ? `demo-target demo-target--${demoPosition}` : ''
+
   return (
-    <article className={`result-card ${className}`.trim()}>
+    <article
+      className={`result-card ${className} ${demoClasses}`.trim()}
+      data-demo-label={demoTip ? demoLabel : undefined}
+      data-demo-tip={demoTip || undefined}
+    >
       <span className="result-card__eyebrow">{eyebrow}</span>
       <h3>{title}</h3>
       {children}
@@ -39,7 +45,12 @@ function ResultsDashboard({ data, isLoading, resultSource }) {
   const canExport = Boolean(data) && !isLoading
 
   return (
-    <section className="results-wrap" id="results">
+    <section
+      className="results-wrap demo-target demo-target--center"
+      data-demo-label="Results cue"
+      data-demo-tip="The dashboard turns a single requirement into eight structured artifacts you can scan quickly in a short portfolio demo."
+      id="results"
+    >
       <div className="results-head">
         <div>
           <div className="eyebrow section-eyebrow">Results Dashboard</div>
@@ -90,7 +101,14 @@ function ResultsDashboard({ data, isLoading, resultSource }) {
       </div>
 
       <div className="dashboard-grid">
-        <ResultCard className="span-2" eyebrow="1" title="Primary Workflow Paths">
+        <ResultCard
+          className="span-2"
+          demoLabel="Workflow cue"
+          demoPosition="left"
+          demoTip="This card shows the main test flows so viewers immediately see structured QA thinking instead of generic AI text."
+          eyebrow="1"
+          title="Primary Workflow Paths"
+        >
           {isLoading ? (
             <LoadingRows count={5} />
           ) : data ? (
@@ -162,7 +180,14 @@ function ResultsDashboard({ data, isLoading, resultSource }) {
           )}
         </ResultCard>
 
-        <ResultCard className="span-2" eyebrow="4" title="Audit and Traceability Matrix">
+        <ResultCard
+          className="span-2"
+          demoLabel="Traceability cue"
+          demoPosition="left"
+          demoTip="This matrix connects the requirement to coverage and verification steps, which makes the project feel more production-aware."
+          eyebrow="4"
+          title="Audit and Traceability Matrix"
+        >
           {isLoading ? (
             <LoadingRows count={4} />
           ) : data ? (
@@ -226,7 +251,12 @@ function ResultsDashboard({ data, isLoading, resultSource }) {
           )}
         </ResultCard>
 
-        <ResultCard eyebrow="6" title="Risk Notes and Guardrails">
+        <ResultCard
+          demoLabel="Risk cue"
+          demoTip="This section highlights where workflow risk should trigger stronger testing focus, evidence capture, or human review."
+          eyebrow="6"
+          title="Risk Notes and Guardrails"
+        >
           {isLoading ? (
             <LoadingRows count={4} />
           ) : data ? (

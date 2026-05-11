@@ -20,7 +20,12 @@ function RequirementForm({
   resultSource,
 }) {
   return (
-    <section className="generator-panel" id="generator">
+    <section
+      className="generator-panel demo-target demo-target--right"
+      data-demo-label="Input cue"
+      data-demo-tip="Start here: paste one requirement, set the domain and risk level, then generate the full QA review package."
+      id="generator"
+    >
       <div className="panel-header">
         <div>
           <div className="eyebrow section-eyebrow">Workflow Generator</div>

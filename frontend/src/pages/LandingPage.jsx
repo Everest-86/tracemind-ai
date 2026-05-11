@@ -240,7 +240,12 @@ function LandingPage() {
             </ul>
           </div>
 
-          <div className="signal-board" aria-label="TraceMind AI workflow snapshot">
+          <div
+            aria-label="TraceMind AI workflow snapshot"
+            className="signal-board demo-target demo-target--left demo-target--dark"
+            data-demo-label="Overview cue"
+            data-demo-tip="Open the demo here: this snapshot explains the requirement-to-results flow before you scroll into the working screens."
+          >
             <div className="signal-board__meta">
               <span>TraceMind AI portfolio flow</span>
               <span>Modern React + FastAPI demo application</span>
@@ -282,7 +287,11 @@ function LandingPage() {
           copy="The interface is organized around the deliverables a recruiter, client, or stakeholder can scan quickly to understand the workflow, QA thinking, and documentation quality."
         />
 
-        <div className="output-grid">
+        <div
+          className="output-grid demo-target demo-target--center"
+          data-demo-label="Coverage cue"
+          data-demo-tip="This section previews the categories the app generates so viewers understand the scope before the live result cards appear."
+        >
           {outputs.map((item) => (
             <article className="output-card" key={item.title}>
               <span>{item.label}</span>
@@ -296,6 +305,11 @@ function LandingPage() {
       </section>
 
       <section className="page-section">
+        <div className="demo-guide">
+          <div className="badge">No-voice demo assist</div>
+          <p>Hover the highlighted sections during a recording to reveal short on-screen explanations for each part of the workflow.</p>
+        </div>
+
         <div className="studio-layout">
           <RequirementForm
             errorMessage={errorMessage}

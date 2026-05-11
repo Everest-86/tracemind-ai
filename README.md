@@ -115,6 +115,8 @@ Suggested filenames:
 5. Generate the package and walk through the output cards.
 6. Export the TXT and CSV files to show presentation and documentation quality.
 
+No-voice recording guide: [`DEMO_NO_VOICE.md`](./DEMO_NO_VOICE.md)
+
 ## Feedback and Review
 
 TraceMind AI now includes a structured feedback package so the project can be improved through real reviewer input instead of guesswork alone.

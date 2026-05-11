@@ -5,23 +5,24 @@
 1. Start the backend server from `backend/`.
 2. Start the frontend server from `frontend/`.
 3. Open `http://127.0.0.1:5173`.
-4. Confirm there are no real API keys, personal credentials, private exports, or sensitive files visible on screen.
-5. Show the landing section and briefly explain that TraceMind AI is a recruiter-friendly workflow automation and QA portfolio project.
-6. Click `Use Sample Requirement`.
-7. Click `Generate Demo Package`.
-8. Walk through the main workflow outputs:
+4. If you are recording without voice, review [`DEMO_NO_VOICE.md`](./DEMO_NO_VOICE.md) first and use the built-in hover cues during the walkthrough.
+5. Confirm there are no real API keys, personal credentials, private exports, or sensitive files visible on screen.
+6. Show the landing section and briefly explain that TraceMind AI is a recruiter-friendly workflow automation and QA portfolio project.
+7. Click `Use Sample Requirement`.
+8. Click `Generate Demo Package`.
+9. Walk through the main workflow outputs:
    - primary workflow paths
    - edge cases
    - failure modes and guardrails
    - traceability matrix
    - risk notes
-9. Mention the QA/testing approach:
+10. Mention the QA/testing approach:
    - structured test coverage
    - traceability
    - exportable artifacts
    - fallback-safe demo behavior
-10. Export at least one TXT or CSV artifact to show documentation quality.
-11. End with a short summary that the project demonstrates AI-assisted workflow automation, clean organization, and public-safe portfolio presentation.
+11. Export at least one TXT or CSV artifact to show documentation quality.
+12. End with a short summary that the project demonstrates AI-assisted workflow automation, clean organization, and public-safe portfolio presentation.
 
 ## Before Publishing The Recording
 
